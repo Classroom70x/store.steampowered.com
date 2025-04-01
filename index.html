@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Classroom 70X</title>
+  <link id="favicon" rel="icon" href="https://i.postimg.cc/ppSfsBPB/IMG-8407.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Press Start 2P', cursive;
+      background-color: black;
+      color: white;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    a {
+      text-decoration: none;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: black;
+      padding: 10px;
+      border-bottom: 2px solid white;
+    }
+    .navbar button {
+      background: black;
+      border: 2px solid white;
+      color: white;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-family: 'Press Start 2P', cursive;
+    }
+    .settings-panel {
+      display: none;
+      position: fixed;
+      top: 50px;
+      right: 20px;
+      background: black;
+      border: 2px solid white;
+      padding: 20px;
+      border-radius: 10px;
+      z-index: 1000;
+    }
+    .settings-panel img {
+      width: 50px;
+      height: 50px;
+      margin: 10px;
+      cursor: pointer;
+      border: 2px solid white;
+      border-radius: 5px;
+    }
+    .search-container {
+      margin: 20px auto;
+    }
+    .search-bar {
+      width: 80%;
+      padding: 10px;
+      font-family: 'Press Start 2P', cursive;
+      background-color: black;
+      color: white;
+      border: 2px solid white;
+      text-align: center;
+    }
+    .emulator-button, .unblocked-button {
+      font-family: 'Press Start 2P', cursive;
+      background-color: black;
+      color: white;
+      border: 2px solid white;
+      padding: 10px 20px;
+      cursor: pointer;
+      margin: 20px auto;
+      display: block;
+    }
+    .emulator-container, .unblocked-container {
+      display: none;
+      background-color: black;
+      border: 2px solid white;
+      padding: 20px;
+      width: 80%;
+      margin: 20px auto;
+      font-family: 'Press Start 2P', cursive;
+    }
+    .game-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+    .game {
+      background-color: grey;
+      padding: 15px;
+      border-radius: 20px;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      width: 150px;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .game:hover {
+      transform: scale(1.1);
+    }
+    .game img {
+      width: 100px;
+      height: 100px;
+      border-radius: 15px;
+      object-fit: cover;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal iframe {
+      width: 80%;
+      height: 80%;
+      border: none;
+    }
+    .modal button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: black;
+      border: 2px solid white;
+      color: white;
+      font-family: 'Press Start 2P', cursive;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    .summary {
+      background: black;
+      border-top: 2px solid white;
+      padding: 20px;
+      font-size: 14px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <button onclick="resetTabCloak()">Home</button>
+    <h1>Classroom 70X</h1>
+    <button onclick="toggleSettings()">Settings</button>
+  </div>
+
+  <div id="settingsPanel" class="settings-panel">
+    <p>Select Tab Cloak:</p>
+    <img src="https://i.postimg.cc/ppSfsBPB/IMG-8407.png" alt="Option 1" onclick="setTabCloak('Classroom 70X', 'https://i.postimg.cc/ppSfsBPB/IMG-8407.png')" />
+    <img src="https://i.postimg.cc/yDSFtSdC/IMG-8408.png" alt="Option 2" onclick="setTabCloak('Classroom 70X - Clever', 'https://i.postimg.cc/yDSFtSdC/IMG-8408.png')" />
+    <img src="https://i.postimg.cc/zLCTXZKd/IMG-8409.png" alt="Option 3" onclick="setTabCloak('Classroom 70X - Smart', 'https://i.postimg.cc/zLCTXZKd/IMG-8409.png')" />
+    <img src="https://i.postimg.cc/wy9L1fk9/IMG-8410.png" alt="Option 4" onclick="setTabCloak('Classroom 70X - Elite', 'https://i.postimg.cc/wy9L1fk9/IMG-8410.png')" />
+    <p>Additional Cloaks:</p>
+    <img src="https://via.placeholder.com/50?text=GC" alt="Google Classroom" onclick="setTabCloak('Google Classroom', 'https://via.placeholder.com/50?text=GC')" />
+    <img src="https://via.placeholder.com/50?text=GD" alt="Google Drive" onclick="setTabCloak('Google Drive', 'https://via.placeholder.com/50?text=GD')" />
+    <img src="https://via.placeholder.com/50?text=Clever" alt="Clever" onclick="setTabCloak('Clever', 'https://via.placeholder.com/50?text=Clever')" />
+  </div>
+
+  <div class="search-container">
+    <input type="text" id="searchBar" class="search-bar" placeholder="Search for a game..." onkeyup="filterGames()" />
+  </div>
+
+  <button class="emulator-button" onclick="toggleEmulator()">Emulator</button>
+  <div id="emulator" class="emulator-container">
+    <p>Drag and Drop Your File Here</p>
+    <input type="file" />
+  </div>
+
+  <button class="emulator-button" onclick="toggleUnblocked()">Unblocked</button>
+  <div id="unblocked" class="emulator-container">
+    <p>Embedded Unblocked Site:</p>
+    <iframe src="https://p.bestbfs.org" style="width:100%; height:400px;"></iframe>
+  </div>
+
+  <div class="game-container" id="gameContainer">
+    <!-- Game 1 -->
+    <div class="game" data-name="bitlife" onclick="openGame('https://class-911.github.io/files/BitLife/index.html')">
+      <img src="https://i.postimg.cc/c1jhS18w/IMG-8366.jpg" alt="BitLife" />
+    </div>
+    <!-- Game 2 -->
+    <div class="game" data-name="funnyshooter2" onclick="openGame('https://class-911.github.io/files/FunnyShooter2/index.html')">
+      <img src="https://i.postimg.cc/6pVfndbf/IMG-8367.jpg" alt="Funny Shooter 2" />
+    </div>
+    <!-- Game 3 -->
+    <div class="game" data-name="subwaysurfers" onclick="openGame('https://dddavit.github.io/subway/')">
+      <img src="https://i.postimg.cc/sDhcDFp8/IMG-8368.jpg" alt="Subway Surfers" />
+    </div>
+    <!-- Game 4 -->
+    <div class="game" data-name="carnage3d" onclick="openGame('https://codenamecpp.github.io/carnage3d/web/carnage3D_wasm.html')">
+      <img src="https://i.postimg.cc/bvzHTsKc/IMG-8369.jpg" alt="Carnage3D" />
+    </div>
+    <!-- Game 5 -->
+    <div class="game" data-name="geometrydash" onclick="openGame('https://class-911.github.io/files/GeometryDash/index.html')">
+      <img src="https://i.postimg.cc/wjYk1W2B/IMG-8370.jpg" alt="Geometry Dash" />
+    </div>
+    <!-- Game 6 -->
+    <div class="game" data-name="pearassessment" onclick="openGame('https://classroom70x.github.io/PearAssesment.github.io/')">
+      <img src="https://i.postimg.cc/0N84PSrW/download.jpg" alt="Pear Assessment" />
+    </div>
+    <!-- Game 7 -->
+    <div class="game" data-name="game7" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 8 -->
+    <div class="game" data-name="game8" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 9 -->
+    <div class="game" data-name="game9" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 10 -->
+    <div class="game" data-name="game10" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 11 -->
+    <div class="game" data-name="game11" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 12 -->
+    <div class="game" data-name="game12" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 13 -->
+    <div class="game" data-name="game13" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 14 -->
+    <div class="game" data-name="game14" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 15 -->
+    <div class="game" data-name="game15" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 16 -->
+    <div class="game" data-name="game16" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 17 -->
+    <div class="game" data-name="game17" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 18 -->
+    <div class="game" data-name="game18" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 19 -->
+    <div class="game" data-name="game19" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 20 -->
+    <div class="game" data-name="game20" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 21 -->
+    <div class="game" data-name="game21" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 22 -->
+    <div class="game" data-name="game22" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 23 -->
+    <div class="game" data-name="game23" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 24 -->
+    <div class="game" data-name="game24" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 25 -->
+    <div class="game" data-name="game25" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 26 -->
+    <div class="game" data-name="game26" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 27 -->
+    <div class="game" data-name="game27" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 28 -->
+    <div class="game" data-name="game28" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 29 -->
+    <div class="game" data-name="game29" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 30 -->
+    <div class="game" data-name="game30" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+    <!-- Game 31 -->
+    <div class="game" data-name="game31" onclick="openGame('game-url')">
+      <img src="game-image-url" alt="Game Name" />
+    </div>
+  </div>
+
+  <div id="gameModal" class="modal">
+    <button onclick="closeGame()">Close</button>
+    <iframe id="gameFrame" src="" frameborder="0"></iframe>
+  </div>
+
+  <script>
+    function openGame(url) {
+      document.getElementById("gameModal").style.display = "flex";
+      document.getElementById("gameFrame").src = url;
+    }
+
+    function closeGame() {
+      document.getElementById("gameModal").style.display = "none";
+      document.getElementById("gameFrame").src = "";
+    }
+
+    function toggleSettings() {
+      const panel = document.getElementById("settingsPanel");
+      panel.style.display = (panel.style.display === "none" || panel.style.display === "") ? "block" : "none";
+    }
+
+    function setTabCloak(title, icon) {
+      document.title = title;
+      document.getElementById("favicon").href = icon;
+    }
+
+    function resetTabCloak() {
+      document.title = "Classroom 70X";
+      document.getElementById("favicon").href = "https://i.postimg.cc/ppSfsBPB/IMG-8407.png";
+    }
+  </script>
+</body>
+</html>
